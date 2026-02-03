@@ -11,6 +11,13 @@ import Discover from '@/pages/Discover'
 import Profile from '@/pages/Profile'
 import Wallet from '@/pages/Wallet'
 import CharacterDetail from '@/pages/CharacterDetail'
+import CreateCharacter from '@/pages/CreateCharacter'
+import Favorites from '@/pages/Favorites'
+import Notifications from '@/pages/Notifications'
+import PrivacySettings from '@/pages/PrivacySettings'
+import Settings from '@/pages/Settings'
+import HelpFeedback from '@/pages/HelpFeedback'
+import About from '@/pages/About'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
@@ -61,6 +68,62 @@ export default function App() {
         element={
           <ProtectedRoute>
             <Wallet />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/create-character"
+        element={
+          <ProtectedRoute>
+            <CreateCharacter />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/favorites"
+        element={
+          <ProtectedRoute>
+            <Favorites />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <Notifications />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/privacy-settings"
+        element={
+          <ProtectedRoute>
+            <PrivacySettings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/help-feedback"
+        element={
+          <ProtectedRoute>
+            <HelpFeedback />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/about"
+        element={
+          <ProtectedRoute>
+            <About />
           </ProtectedRoute>
         }
       />

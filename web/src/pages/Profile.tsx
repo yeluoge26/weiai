@@ -153,7 +153,7 @@ export default function Profile() {
           </List.Item>
           <List.Item
             prefix={<HeartOutline className="text-xl text-red-500" />}
-            onClick={() => Toast.show('功能开发中')}
+            onClick={() => navigate('/favorites')}
             arrow={<RightOutline />}
           >
             我的收藏
@@ -170,21 +170,21 @@ export default function Profile() {
         <List className="mt-4">
           <List.Item
             prefix={<BellOutline className="text-xl text-orange-500" />}
-            onClick={() => Toast.show('功能开发中')}
+            onClick={() => navigate('/notifications')}
             arrow={<RightOutline />}
           >
             消息通知
           </List.Item>
           <List.Item
             prefix={<LockOutline className="text-xl text-green-500" />}
-            onClick={() => Toast.show('功能开发中')}
+            onClick={() => navigate('/privacy-settings')}
             arrow={<RightOutline />}
           >
             隐私设置
           </List.Item>
           <List.Item
             prefix={<SetOutline className="text-xl text-gray-500" />}
-            onClick={() => Toast.show('功能开发中')}
+            onClick={() => navigate('/settings')}
             arrow={<RightOutline />}
           >
             通用设置
@@ -194,14 +194,14 @@ export default function Profile() {
         <List className="mt-4">
           <List.Item
             prefix={<QuestionCircleOutline className="text-xl text-blue-400" />}
-            onClick={() => Toast.show('功能开发中')}
+            onClick={() => navigate('/help-feedback')}
             arrow={<RightOutline />}
           >
             帮助与反馈
           </List.Item>
           <List.Item
             prefix={<InformationCircleOutline className="text-xl text-gray-400" />}
-            onClick={() => Toast.show('功能开发中')}
+            onClick={() => navigate('/about')}
             arrow={<RightOutline />}
           >
             关于我们
