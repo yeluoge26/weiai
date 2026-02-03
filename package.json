@@ -1,0 +1,16 @@
+{
+  "name": "welove-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run web\" \"npm run admin\"",
+    "server": "cd server && npm run dev",
+    "web": "cd web && npm run dev",
+    "admin": "cd admin && npm run dev",
+    "install:all": "npm install && cd server && npm install && cd ../web && npm install && cd ../admin && npm install",
+    "db:seed": "cd server && npm run db:seed"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
