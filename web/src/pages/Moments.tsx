@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Image, Tabs } from 'antd-mobile'
-import { HeartOutline, MessageOutline, HeartFill } from 'antd-mobile-icons'
+import { Image, Tabs, Popup, TextArea, Button, Toast } from 'antd-mobile'
+import { HeartOutline, MessageOutline, HeartFill, CloseOutline } from 'antd-mobile-icons'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
@@ -92,6 +92,8 @@ export default function Moments() {
   const navigate = useNavigate()
   const [moments, setMoments] = useState<Moment[]>(mockMoments)
   const [activeTab, setActiveTab] = useState('全部')
+  const [showPostModal, setShowPostModal] = useState(false)
+  const [postContent, setPostContent] = useState('')
 
   const handleLike = (momentId: number) => {
     setMoments(moments.map(m => {
@@ -133,13 +135,28 @@ export default function Moments() {
     }
   }
 
+  const handlePost = () => {
+    if (!postContent.trim()) {
+      Toast.show({ icon: 'fail', content: '请输入内容' })
+      return
+    }
+    Toast.show({ icon: 'success', content: '发布成功' })
+    setPostContent('')
+    setShowPostModal(false)
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-safe">
       {/* Header */}
-      <div className="sticky top-0 bg-white border-b z-10">
+      <div className="sticky top-0 bg-white border-b z-10 safe-area-top">
         <div className="px-4 py-3 flex justify-between items-center">
           <h1 className="text-xl font-semibold">朋友圈</h1>
-          <button className="text-blue-500 text-sm">发动态</button>
+          <button
+            className="text-blue-500 text-sm active:text-blue-600 px-2 py-1"
+            onClick={() => setShowPostModal(true)}
+          >
+            发动态
+          </button>
         </div>
         <Tabs
           activeKey={activeTab}
@@ -161,7 +178,7 @@ export default function Moments() {
               className="flex items-center gap-3"
               onClick={() => navigate(`/chat/${moment.characterId}`)}
             >
-              <div className={`w-11 h-11 rounded-full overflow-hidden bg-gradient-to-b ${getAvatarBg(moment.characterName)} flex items-center justify-center`}>
+              <div className={`w-11 h-11 flex-shrink-0 rounded-full overflow-hidden bg-gradient-to-b ${getAvatarBg(moment.characterName)} flex items-center justify-center`}>
                 {moment.characterAvatar ? (
                   <Image
                     src={moment.characterAvatar}
@@ -176,8 +193,8 @@ export default function Moments() {
                   </span>
                 )}
               </div>
-              <div className="flex-1">
-                <h3 className="font-medium text-gray-800">{moment.characterName}</h3>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-medium text-gray-800 truncate">{moment.characterName}</h3>
                 <span className="text-xs text-gray-400">
                   {formatTime(moment.createdAt)}
                 </span>
@@ -208,7 +225,7 @@ export default function Moments() {
             {/* Actions */}
             <div className="flex items-center gap-6 mt-4 pt-3 border-t border-gray-100">
               <button
-                className="flex items-center gap-1.5"
+                className="flex items-center gap-1.5 active:opacity-70"
                 onClick={() => handleLike(moment.id)}
               >
                 {moment.isLiked ? (
@@ -220,17 +237,58 @@ export default function Moments() {
                   {moment.likeCount}
                 </span>
               </button>
-              <button className="flex items-center gap-1.5 text-gray-500">
+              <button className="flex items-center gap-1.5 text-gray-500 active:opacity-70">
                 <MessageOutline fontSize={18} className="text-gray-400" />
                 <span className="text-sm">{moment.commentCount}</span>
               </button>
-              <button className="flex items-center gap-1.5 text-gray-500 ml-auto">
+              <button className="flex items-center gap-1.5 text-gray-500 ml-auto active:opacity-70">
                 <span className="text-sm">分享</span>
               </button>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Post Modal */}
+      <Popup
+        visible={showPostModal}
+        onMaskClick={() => setShowPostModal(false)}
+        position="bottom"
+        bodyStyle={{ height: '60vh', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}
+      >
+        <div className="flex flex-col h-full">
+          <div className="flex items-center justify-between px-4 py-3 border-b">
+            <button onClick={() => setShowPostModal(false)}>
+              <CloseOutline fontSize={24} className="text-gray-500" />
+            </button>
+            <span className="font-medium">发布动态</span>
+            <Button
+              size="small"
+              color="primary"
+              onClick={handlePost}
+            >
+              发布
+            </Button>
+          </div>
+          <div className="flex-1 p-4">
+            <TextArea
+              placeholder="分享你的想法..."
+              value={postContent}
+              onChange={setPostContent}
+              autoFocus
+              rows={8}
+              style={{ '--font-size': '16px' }}
+            />
+          </div>
+          <div className="p-4 pb-safe border-t">
+            <div className="flex gap-4 text-gray-400">
+              <button className="active:text-gray-600">📷 图片</button>
+              <button className="active:text-gray-600">📍 位置</button>
+              <button className="active:text-gray-600">@ 提及</button>
+            </div>
+          </div>
+        </div>
+      </Popup>
     </div>
   )
 }

@@ -100,12 +100,12 @@ export default function Chat() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-safe">
       {/* Header */}
-      <div className="sticky top-0 bg-white border-b px-4 py-3 z-10 flex justify-between items-center">
+      <div className="sticky top-0 bg-white border-b px-4 py-3 z-10 flex justify-between items-center safe-area-top">
         <h1 className="text-xl font-semibold">聊天</h1>
         <button
-          className="w-8 h-8 flex items-center justify-center text-gray-600"
+          className="w-10 h-10 flex items-center justify-center text-gray-600 -mr-2 active:bg-gray-100 rounded-full"
           onClick={() => navigate('/contacts')}
         >
           <AddOutline fontSize={24} />
@@ -119,7 +119,7 @@ export default function Chat() {
           <p>暂无聊天记录</p>
           <p className="text-sm mt-1">去通讯录找角色开始聊天吧</p>
           <button
-            className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-full text-sm"
+            className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-full text-sm active:bg-blue-600"
             onClick={() => navigate('/contacts')}
           >
             开始聊天
@@ -141,7 +141,7 @@ export default function Chat() {
             >
               <List.Item
                 prefix={
-                  <div className={`w-12 h-12 rounded-full overflow-hidden bg-gradient-to-b ${getAvatarBg(session.characterName)} flex items-center justify-center`}>
+                  <div className={`w-12 h-12 flex-shrink-0 rounded-full overflow-hidden bg-gradient-to-b ${getAvatarBg(session.characterName)} flex items-center justify-center`}>
                     {session.characterAvatar ? (
                       <Image
                         src={session.characterAvatar}
@@ -158,13 +158,13 @@ export default function Chat() {
                   </div>
                 }
                 description={
-                  <div className="text-gray-500 text-sm truncate max-w-[220px]">
+                  <div className="text-gray-500 text-sm truncate pr-2">
                     {session.lastMessage}
                   </div>
                 }
                 extra={
-                  <div className="flex flex-col items-end gap-1">
-                    <span className="text-xs text-gray-400">
+                  <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                    <span className="text-xs text-gray-400 whitespace-nowrap">
                       {formatTime(session.lastMessageAt)}
                     </span>
                     {session.unreadCount > 0 && (
@@ -181,7 +181,7 @@ export default function Chat() {
                   {session.isPinned && (
                     <span className="text-xs text-blue-500">📌</span>
                   )}
-                  <span className="font-medium text-gray-800">{session.characterName}</span>
+                  <span className="font-medium text-gray-800 truncate">{session.characterName}</span>
                 </div>
               </List.Item>
             </SwipeAction>

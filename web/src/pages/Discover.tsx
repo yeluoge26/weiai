@@ -148,9 +148,9 @@ export default function Discover() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-safe">
       {/* Header */}
-      <div className="sticky top-0 bg-white border-b z-10">
+      <div className="sticky top-0 bg-white border-b z-10 safe-area-top">
         <div className="px-4 py-3">
           <div className="flex justify-between items-center mb-3">
             <h1 className="text-xl font-semibold">发现</h1>
@@ -187,11 +187,11 @@ export default function Discover() {
           {getFilteredCharacters().map(character => (
             <div
               key={character.id}
-              className="bg-white rounded-lg overflow-hidden shadow-sm"
+              className="bg-white rounded-lg overflow-hidden shadow-sm active:opacity-90"
               onClick={() => handleCharacterClick(character)}
             >
               {/* Avatar */}
-              <div className={`h-32 bg-gradient-to-b ${getAvatarBg(character.name)} flex items-center justify-center relative`}>
+              <div className={`h-28 sm:h-32 bg-gradient-to-b ${getAvatarBg(character.name)} flex items-center justify-center relative`}>
                 {character.avatar ? (
                   <Image
                     src={character.avatar}
@@ -199,7 +199,7 @@ export default function Discover() {
                     style={{ width: '100%', height: '100%' }}
                   />
                 ) : (
-                  <span className="text-4xl font-medium text-gray-600">
+                  <span className="text-3xl sm:text-4xl font-medium text-gray-600">
                     {character.name.slice(0, 1)}
                   </span>
                 )}
@@ -232,8 +232,8 @@ export default function Discover() {
 
               {/* Info */}
               <div className="p-3">
-                <div className="font-medium text-gray-800 mb-1">{character.name}</div>
-                <div className="text-xs text-gray-500 line-clamp-2 mb-2">{character.description}</div>
+                <div className="font-medium text-gray-800 mb-1 truncate">{character.name}</div>
+                <div className="text-xs text-gray-500 line-clamp-2 mb-2 h-8">{character.description}</div>
                 <div className="flex flex-wrap gap-1 mb-2">
                   {character.tags.slice(0, 2).map(tag => (
                     <Tag key={tag} color="default" fill="outline" style={{ '--border-radius': '4px', fontSize: '10px' }}>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --adm-color-primary: #ff6b9d;
+  --adm-color-primary: #3b82f6;
   --adm-color-success: #00b578;
   --adm-color-warning: #ff8f1f;
   --adm-color-danger: #ff3141;
@@ -36,11 +36,48 @@ body {
   border-radius: 2px;
 }
 
-/* Safe area */
+/* Safe area utilities for mobile */
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
 .safe-area-top {
   padding-top: env(safe-area-inset-top);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Touch feedback */
+.active\:bg-gray-100:active {
+  background-color: #f3f4f6;
+}
+
+.active\:bg-blue-600:active {
+  background-color: #2563eb;
+}
+
+/* Fix for iOS input zoom */
+input, textarea, select {
+  font-size: 16px;
+}
+
+/* Prevent pull-to-refresh on iOS */
+html {
+  overscroll-behavior: none;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Tabs, SearchBar, Image, Tag } from 'antd-mobile'
-import { HeartOutline, MessageOutline, HeartFill } from 'antd-mobile-icons'
+import { Tabs, SearchBar, Image, Tag, Popup, TextArea, Button, Toast } from 'antd-mobile'
+import { HeartOutline, MessageOutline, HeartFill, CloseOutline } from 'antd-mobile-icons'
 
 interface Post {
   id: number
@@ -71,6 +71,8 @@ export default function Community() {
   const [activeCategory, setActiveCategory] = useState('推荐')
   const [searchText, setSearchText] = useState('')
   const [posts, setPosts] = useState<Post[]>(mockPosts)
+  const [showPostModal, setShowPostModal] = useState(false)
+  const [postContent, setPostContent] = useState('')
 
   const filteredPosts = activeCategory === '推荐'
     ? posts
@@ -100,14 +102,27 @@ export default function Community() {
     return colors[index]
   }
 
+  const handlePost = () => {
+    if (!postContent.trim()) {
+      Toast.show({ icon: 'fail', content: '请输入内容' })
+      return
+    }
+    Toast.show({ icon: 'success', content: '发布成功' })
+    setPostContent('')
+    setShowPostModal(false)
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-safe">
       {/* Header */}
-      <div className="sticky top-0 bg-white border-b z-10">
+      <div className="sticky top-0 bg-white border-b z-10 safe-area-top">
         <div className="px-4 py-3">
           <div className="flex justify-between items-center mb-3">
             <h1 className="text-xl font-semibold">社区</h1>
-            <button className="px-4 py-1.5 bg-blue-500 text-white text-sm rounded-full">
+            <button
+              className="px-4 py-1.5 bg-blue-500 text-white text-sm rounded-full active:bg-blue-600"
+              onClick={() => setShowPostModal(true)}
+            >
               发帖
             </button>
           </div>
@@ -135,7 +150,7 @@ export default function Community() {
           <div key={post.id} className="bg-white rounded-lg p-4">
             {/* Author Info */}
             <div className="flex items-center gap-3 mb-3">
-              <div className={`w-10 h-10 rounded-full overflow-hidden bg-gradient-to-b ${getAvatarBg(post.author.name)} flex items-center justify-center`}>
+              <div className={`w-10 h-10 flex-shrink-0 rounded-full overflow-hidden bg-gradient-to-b ${getAvatarBg(post.author.name)} flex items-center justify-center`}>
                 {post.author.avatar ? (
                   <Image
                     src={post.author.avatar}
@@ -150,16 +165,16 @@ export default function Community() {
                   </span>
                 )}
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-800">{post.author.name}</span>
+                  <span className="font-medium text-gray-800 truncate">{post.author.name}</span>
                   {post.author.isVip && (
-                    <span className="text-xs px-1.5 py-0.5 bg-yellow-100 text-yellow-600 rounded">VIP</span>
+                    <span className="text-xs px-1.5 py-0.5 bg-yellow-100 text-yellow-600 rounded flex-shrink-0">VIP</span>
                   )}
                 </div>
                 <span className="text-xs text-gray-400">{post.createdAt}</span>
               </div>
-              <Tag color="primary" fill="outline" style={{ '--border-radius': '12px' }}>
+              <Tag color="primary" fill="outline" style={{ '--border-radius': '12px' }} className="flex-shrink-0">
                 {post.category}
               </Tag>
             </div>
@@ -186,7 +201,7 @@ export default function Community() {
             {/* Actions */}
             <div className="flex items-center gap-6 pt-3 border-t">
               <button
-                className="flex items-center gap-1 text-gray-500"
+                className="flex items-center gap-1 text-gray-500 active:opacity-70"
                 onClick={() => handleLike(post.id)}
               >
                 {post.isLiked ? (
@@ -196,7 +211,7 @@ export default function Community() {
                 )}
                 <span className={`text-sm ${post.isLiked ? 'text-red-500' : ''}`}>{post.likes}</span>
               </button>
-              <button className="flex items-center gap-1 text-gray-500">
+              <button className="flex items-center gap-1 text-gray-500 active:opacity-70">
                 <MessageOutline fontSize={18} />
                 <span className="text-sm">{post.comments}</span>
               </button>
@@ -204,6 +219,47 @@ export default function Community() {
           </div>
         ))}
       </div>
+
+      {/* Post Modal */}
+      <Popup
+        visible={showPostModal}
+        onMaskClick={() => setShowPostModal(false)}
+        position="bottom"
+        bodyStyle={{ height: '60vh', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}
+      >
+        <div className="flex flex-col h-full">
+          <div className="flex items-center justify-between px-4 py-3 border-b">
+            <button onClick={() => setShowPostModal(false)}>
+              <CloseOutline fontSize={24} className="text-gray-500" />
+            </button>
+            <span className="font-medium">发布帖子</span>
+            <Button
+              size="small"
+              color="primary"
+              onClick={handlePost}
+            >
+              发布
+            </Button>
+          </div>
+          <div className="flex-1 p-4">
+            <TextArea
+              placeholder="分享你的想法..."
+              value={postContent}
+              onChange={setPostContent}
+              autoFocus
+              rows={8}
+              style={{ '--font-size': '16px' }}
+            />
+          </div>
+          <div className="p-4 pb-safe border-t">
+            <div className="flex gap-4 text-gray-400">
+              <button className="active:text-gray-600">📷 图片</button>
+              <button className="active:text-gray-600"># 话题</button>
+              <button className="active:text-gray-600">@ 提及</button>
+            </div>
+          </div>
+        </div>
+      </Popup>
     </div>
   )
 }

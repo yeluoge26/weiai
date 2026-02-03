@@ -75,7 +75,6 @@ export default function Contacts() {
 
   const handleCreateCharacter = (type: string) => {
     setShowCreateModal(false)
-    // Navigate to character creation page based on type
     navigate(`/create-character?type=${type}`)
   }
 
@@ -100,10 +99,10 @@ export default function Contacts() {
         )}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="font-medium text-gray-800 mb-1">{character.name}</div>
+        <div className="font-medium text-gray-800 mb-1 truncate">{character.name}</div>
         <div className="text-sm text-gray-500 truncate">{character.description}</div>
         <div className="flex flex-wrap gap-1 mt-1">
-          {character.tags.map(tag => (
+          {character.tags.slice(0, 3).map(tag => (
             <span
               key={tag}
               className={`text-xs px-1.5 py-0.5 rounded ${tagColors[tag] || 'bg-gray-100 text-gray-600'}`}
@@ -117,13 +116,13 @@ export default function Contacts() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-safe">
       {/* Header */}
-      <div className="sticky top-0 bg-white border-b px-4 py-3 z-10">
+      <div className="sticky top-0 bg-white border-b px-4 py-3 z-10 safe-area-top">
         <div className="flex justify-between items-center mb-3">
           <h1 className="text-xl font-semibold">通讯录</h1>
           <button
-            className="w-8 h-8 flex items-center justify-center text-gray-600"
+            className="w-10 h-10 flex items-center justify-center text-gray-600 -mr-2 active:bg-gray-100 rounded-full"
             onClick={() => setShowCreateModal(true)}
           >
             <AddOutline fontSize={24} />
@@ -145,7 +144,7 @@ export default function Contacts() {
             <span className="text-base font-medium text-gray-800">RPG角色</span>
             <span className="text-xs text-gray-400">({filterCharacters(rpgCharacters).length})</span>
           </div>
-          <div className="flex flex-wrap gap-2 mb-3">
+          <div className="flex flex-wrap gap-2 mb-3 overflow-x-auto hide-scrollbar">
             <Tag color="primary" fill="outline" round>全部</Tag>
             <Tag color="default" fill="outline" round>修真</Tag>
             <Tag color="default" fill="outline" round>仙侠</Tag>
@@ -167,7 +166,7 @@ export default function Contacts() {
             <CharacterCard key={character.id} character={character} />
           ))}
           <button
-            className="w-full p-4 border-2 border-dashed border-gray-200 rounded-lg text-gray-400 flex items-center justify-center gap-2"
+            className="w-full p-4 border-2 border-dashed border-gray-200 rounded-lg text-gray-400 flex items-center justify-center gap-2 active:bg-gray-50"
             onClick={() => setShowCreateModal(true)}
           >
             <AddOutline fontSize={20} />
@@ -182,7 +181,7 @@ export default function Contacts() {
         onMaskClick={() => setShowCreateModal(false)}
         bodyStyle={{ borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}
       >
-        <div className="p-4">
+        <div className="p-4 pb-safe">
           <div className="text-center mb-4">
             <h2 className="text-lg font-semibold">创建角色</h2>
             <p className="text-sm text-gray-500 mt-1">选择你想创建的角色类型</p>
@@ -214,7 +213,7 @@ export default function Contacts() {
             </List.Item>
           </List>
           <button
-            className="w-full mt-4 py-3 text-gray-500"
+            className="w-full mt-4 py-3 text-gray-500 active:bg-gray-50 rounded-lg"
             onClick={() => setShowCreateModal(false)}
           >
             取消
